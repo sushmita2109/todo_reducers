@@ -1,7 +1,7 @@
 import {
   Box,
   Button,
-  Card,
+  Grid,
   Checkbox,
   Modal,
   Typography,
@@ -46,7 +46,7 @@ const TodoList = () => {
     <Box
       sx={{ width: "100vw", display: "flex", justifyContent: "center", p: 2 }}
     >
-      <Card
+      <Box
         sx={{
           border: "4px double #000",
           padding: "10px",
@@ -59,17 +59,23 @@ const TodoList = () => {
         <h2>Todo List</h2>
 
         {todostate.todos.map((todo) => (
-          <Box
+          <Grid
+            container
             key={todo.id}
+            spacing={2}
+            alignItems="center"
             sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              width: "100%",
               padding: "10px",
-              gap: "10px",
+              borderBottom: "1px solid #ddd",
             }}
           >
-            <Box sx={{ display: "flex", alignItems: "center", flex: 1 }}>
+            <Grid
+              item
+              xs={12}
+              sm={8}
+              md={9}
+              sx={{ display: "flex", alignItems: "center" }}
+            >
               <Checkbox
                 checked={todo.completed}
                 onChange={() =>
@@ -87,22 +93,34 @@ const TodoList = () => {
               >
                 {todo.todos}
               </span>
-            </Box>
-            <Button
-              variant="contained"
-              onClick={() => {
-                setSelectedTodo(todo);
-                handleOpen();
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              sm={4}
+              md={3}
+              sx={{
+                display: "flex",
+                gap: 1,
+                justifyContent: { xs: "flex-start", sm: "flex-end" },
               }}
             >
-              Edit
-            </Button>
-            <Button variant="contained" onClick={() => handleDelete(todo.id)}>
-              Delete
-            </Button>
-          </Box>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  setSelectedTodo(todo);
+                  handleOpen();
+                }}
+              >
+                Edit
+              </Button>
+              <Button variant="contained" onClick={() => handleDelete(todo.id)}>
+                Delete
+              </Button>
+            </Grid>
+          </Grid>
         ))}
-      </Card>
+      </Box>
       <Modal open={open} onClose={handleClose}>
         <Box sx={style}>
           <Typography>Change todo here</Typography>
