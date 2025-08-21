@@ -1,13 +1,27 @@
 import React, { useState } from "react";
 import { Box, Button, Card, TextField } from "@mui/material";
 import TodoList from "../Components/TodoList";
+import { useTodo } from "../Context/TodoContext";
 
 const Todo = () => {
   const date = new Date().toDateString();
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState({
+    todos: "",
+    completed: false,
+  });
+  const { todoDispatch } = useTodo();
   const handleAddTodo = () => {
-    console.log("Todo added:", inputValue);
-    setInputValue("");
+    const newTodo = {
+      id: Date.now(),
+      todos: inputValue.todos,
+      completed: false,
+    };
+
+    todoDispatch({
+      type: "ADD_TODO",
+      payload: newTodo,
+    });
+    setInputValue({ todos: "", completed: false });
   };
   return (
     <Box
@@ -73,8 +87,10 @@ const Todo = () => {
           id="outlined-basic"
           label="Add a new todo"
           variant="outlined"
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
+          value={inputValue.text}
+          onChange={(e) =>
+            setInputValue({ ...inputValue, todos: e.target.value })
+          }
         />
         <Button
           variant="contained"
